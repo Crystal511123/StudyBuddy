@@ -18,6 +18,9 @@ class _CoursePageState extends State<CoursePage> {
     final TextEditingController linkController = TextEditingController(
       text: taskIndex != null ? sharedState.tasks[taskIndex]['link'] ?? '' : '',
     );
+    final TextEditingController userNameController = TextEditingController(
+      text: taskIndex != null ? sharedState.tasks[taskIndex]['userName'] ?? '' : '',
+    );
     final TextEditingController accessController = TextEditingController(
       text: taskIndex != null ? sharedState.tasks[taskIndex]['access'] ?? '' : '',
     );
@@ -64,8 +67,20 @@ class _CoursePageState extends State<CoursePage> {
                     border: UnderlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 8),
 
+                //User Name
+                const SizedBox(height: 8),
+                const Align(alignment: Alignment.centerLeft, child: Text("User Name:",style:TextStyle(fontSize: 18,))),
+                TextField(
+                  style:TextStyle(fontSize:20),
+                  controller: userNameController,
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 4),
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 // Access
                 const Align(alignment: Alignment.centerLeft, child: Text("Access:",style:TextStyle(fontSize: 18,))),
                 TextField(
@@ -185,12 +200,14 @@ class _CoursePageState extends State<CoursePage> {
                 // Update the course information in SharedState
                 if (nameController.text.isEmpty ||
                   linkController.text.isEmpty ||
+                  userNameController.text.isEmpty ||
                   accessController.text.isEmpty ||
                   (hourController==0 && minuteController==0 )
                   ) {
                   String missingFields = '';
                   if (nameController.text.isEmpty) missingFields += '-Course Name\n';
                   if (linkController.text.isEmpty) missingFields += '-Course Link\n';
+                  if (userNameController.text.isEmpty) missingFields += '-User Name\n';
                   if (accessController.text.isEmpty) missingFields += '-Access\n';
                   if (minuteController==0 && hourController==0) missingFields += '-Learning Goal\n';
 
@@ -217,6 +234,7 @@ class _CoursePageState extends State<CoursePage> {
                   sharedState.updateCourseInfo(taskIndex,
                     nameController.text,
                     linkController.text,
+                    userNameController.text,
                     accessController.text,
                     hourController,
                     minuteController,
@@ -228,6 +246,7 @@ class _CoursePageState extends State<CoursePage> {
                     'title': nameController.text,
                     'link': linkController.text,
                     'access': accessController.text,
+                    'userName': userNameController.text,
                     'hours': hourController,
                     'minutes': minuteController,
                     'period': selectedPeriod,
@@ -446,6 +465,20 @@ class _CoursePageState extends State<CoursePage> {
           scrollDirection: Axis.horizontal,
           child: Text(
             sharedState.tasks[index]['link'],
+            style: const TextStyle(
+            decoration: TextDecoration.underline,
+            fontSize: 20,
+            color: Color.fromARGB(255, 42, 99, 145),
+          ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        const Text("User Name:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
+        SingleChildScrollView(
+          //for horizontal scrolling
+          scrollDirection: Axis.horizontal,
+          child: Text(
+            sharedState.tasks[index]['userName'],
             style: const TextStyle(
             decoration: TextDecoration.underline,
             fontSize: 20,

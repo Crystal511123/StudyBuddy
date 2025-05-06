@@ -11,6 +11,7 @@ class SharedState extends ChangeNotifier {
       'progress': '30:34 / 30:34',
       'progressValue': 1.0,
       'link':'coursera.org/learn/Business-English',
+      'userName':'Crystal Kuo',
       'access':'0123456789',
       'hours':1,
       'minutes': 30,
@@ -37,9 +38,10 @@ class SharedState extends ChangeNotifier {
     hasNewTask = false; // Mark the task as seen
     notifyListeners();
   }
-  void updateCourseInfo(int index, String newCourseName, String newCourseLink, String newCourseAccess, int newCourseHours,int newCourseMinutes, String newCoursePeriod) {
+  void updateCourseInfo(int index, String newCourseName, String newCourseLink, String newUserName, String newCourseAccess, int newCourseHours,int newCourseMinutes, String newCoursePeriod) {
     tasks[index]['title'] = newCourseName; // Update the course name
     tasks[index]['link'] = newCourseLink; // Update the course name
+    tasks[index]['userName'] = newUserName; 
     tasks[index]['access'] = newCourseAccess; 
     tasks[index]['hours'] = newCourseHours;
     tasks[index]['minutes'] = newCourseMinutes;
