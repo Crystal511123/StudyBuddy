@@ -82,7 +82,7 @@ class _CoursePageState extends State<CoursePage> {
                 ),
                 const SizedBox(height: 8),
                 // Access
-                const Align(alignment: Alignment.centerLeft, child: Text("Access:",style:TextStyle(fontSize: 18,))),
+                const Align(alignment: Alignment.centerLeft, child: Text("Password:",style:TextStyle(fontSize: 18,))),
                 TextField(
                   style:TextStyle(fontSize:20),
                   controller: accessController,
@@ -208,7 +208,7 @@ class _CoursePageState extends State<CoursePage> {
                   if (nameController.text.isEmpty) missingFields += '-Course Name\n';
                   if (linkController.text.isEmpty) missingFields += '-Course Link\n';
                   if (userNameController.text.isEmpty) missingFields += '-User Name\n';
-                  if (accessController.text.isEmpty) missingFields += '-Access\n';
+                  if (accessController.text.isEmpty) missingFields += '-Password\n';
                   if (minuteController==0 && hourController==0) missingFields += '-Learning Goal\n';
 
                   showDialog(
@@ -482,12 +482,11 @@ class _CoursePageState extends State<CoursePage> {
             style: const TextStyle(
             decoration: TextDecoration.underline,
             fontSize: 20,
-            color: Color.fromARGB(255, 42, 99, 145),
           ),
           ),
         ),
         const SizedBox(height: 4),
-        const Text("Access:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
+        const Text("Password:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
         Text(
           sharedState.tasks[index]['access'],
           style: const TextStyle(
