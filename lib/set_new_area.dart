@@ -372,8 +372,27 @@ class _NewAreaPageState extends State<NewAreaPage> {
                         context: context, 
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Missing Name'),
+                            title: Text('Missing Name',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
                             content: Text('Please enter a name for this land.',style: TextStyle(fontSize: 18),),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }else if (selectedBackground==null){
+                      showDialog(
+                        context: context, 
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Missing Background',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
+                            content: Text('Please select a background for this land.',style: TextStyle(fontSize: 18),),
                             actions: [
                               TextButton(
                                 onPressed: () {
