@@ -72,7 +72,7 @@ class _PurchasePageState extends State<PurchasePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
-        toolbarHeight: 70.0,
+        toolbarHeight: 65.0,
         leading: const BackButton(
           color: Colors.white,
         ),

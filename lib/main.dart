@@ -222,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         automaticallyImplyLeading: false,
-        toolbarHeight: 70.0,
+        toolbarHeight: 65.0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start, // Align items to the start (left)
           children: [
