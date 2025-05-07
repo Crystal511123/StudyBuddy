@@ -269,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            const SizedBox(width: 10),
+            //const SizedBox(width: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(

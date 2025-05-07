@@ -128,7 +128,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/bush.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -146,7 +146,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/appletree.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -163,7 +163,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/rosebush.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -180,7 +180,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/cactus.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -201,7 +201,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/elf.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -218,7 +218,7 @@ class _PurchasePageState extends State<PurchasePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/cowboy.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -254,7 +254,8 @@ class _PurchasePageState extends State<PurchasePage> {
                     ),
                   onPressed: totalExp <= maxExp ? () {
                     setState(() {
-                      Provider.of<SharedState>(context, listen: false).exp -= totalExp; // Deduct the total EXP
+                      Provider.of<SharedState>(context, listen:false).deductExp(totalExp);
+                      //Provider.of<SharedState>(context, listen: false).exp -= totalExp; // Deduct the total EXP
                       // Reset counts for all items
                       bushCount = 0;
                       appleTreeCount = 0;

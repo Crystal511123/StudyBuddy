@@ -204,7 +204,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/cyberpunk.jpg',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -229,7 +229,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/wildwest.jpg',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -256,7 +256,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/bush.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -274,7 +274,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/appletree.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -291,7 +291,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/rosebush.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -308,7 +308,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/cactus.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
@@ -329,8 +329,8 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
-                        scale: 3.0,
+                        'image/elf.png',
+                        scale: 1.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
                       ),
@@ -346,8 +346,8 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
-                        scale: 3.0,
+                        'image/cowboy.png',
+                        scale: 1.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image
                       ),
@@ -417,7 +417,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                       return;
                     }
                     Provider.of<SharedState>(context, listen: false).unlockArea();
-                    Provider.of<SharedState>(context, listen: false).exp -= totalExp; // Update the total exp in SharedState
+                    Provider.of<SharedState>(context, listen:false).deductExp(totalExp); // Update the total exp in SharedState
                     Provider.of<SharedState>(context, listen: false).setRecordName(landName.text); // Update the record name in SharedState
                     Navigator.of(context).pop();
                       Navigator.push(
