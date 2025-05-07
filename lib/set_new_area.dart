@@ -54,7 +54,12 @@ class _NewAreaPageState extends State<NewAreaPage> {
   Widget itemRow(String label, int cost, int count, VoidCallback onIncrement, VoidCallback onDecrement) {
     return Row(
       children: [
-        Text('$label:\nEXP $cost',style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+        Text.rich(TextSpan(
+          text: '$label:\n', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          children:[ 
+            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+          ],
+        )),
         Spacer(),
         IconButton(onPressed: onDecrement, icon: Icon(Icons.remove)),
         Container(
@@ -141,7 +146,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     ],
                 ),
                 const SizedBox(height: 20),
-                  Text("Background", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color:Color.fromARGB(255, 23, 118, 202)),),
+                Text("Background", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color:Color.fromARGB(255, 23, 118, 202)),),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -152,7 +157,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                         height: 80, // Adjust the height of the image
                       ),
                       const SizedBox(width: 10), // Add spacing between the image and the text
-                      Text('Forest',style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize),),
+                      Text('Forest',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
                       Spacer(),
                       Transform.scale(
                         scale:2,
@@ -178,7 +183,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                         height: 80, // Adjust the height of the image
                       ),
                       const SizedBox(width: 10), // Add spacing between the image and the text
-                      Text('Barn',style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize),),
+                      Text('Barn',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
                       Spacer(),
                       Transform.scale(
                         scale:2,
@@ -208,7 +213,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                       RichText( text: TextSpan( children: [
                         TextSpan(
                           text: "Cyberpunk\n",
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
                         ),
                         WidgetSpan(
                           child: Icon(Icons.lock, size: 18,color:Colors.grey,),
@@ -233,7 +238,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                       RichText( text: TextSpan( children: [
                         TextSpan(
                           text: "Wild West\n",
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
                         ),
                         WidgetSpan(
                           child: Icon(Icons.lock, size: 18,color:Colors.grey,),

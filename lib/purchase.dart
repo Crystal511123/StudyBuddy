@@ -51,7 +51,12 @@ class _PurchasePageState extends State<PurchasePage> {
   Widget itemRow(String label, int cost, int count, VoidCallback onIncrement, VoidCallback onDecrement) {
     return Row(
       children: [
-        Text('$label:\nEXP $cost',style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+        Text.rich(TextSpan(
+          text: '$label:\n', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          children:[ 
+            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+          ],
+        )),
         Spacer(),
         IconButton(onPressed: onDecrement, icon: Icon(Icons.remove)),
         Container(
