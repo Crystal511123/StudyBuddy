@@ -233,6 +233,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ), // Title on the left
             Spacer(),
+            IconButton(
+            icon: const Icon(Icons.search, size: 35),
+            color:Colors.white,
+            onPressed: () {},
+            ),
             InkWell(
               child: Stack(
                 clipBehavior: Clip.none, // Allows the red circle to overflow if needed
@@ -264,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(

@@ -281,6 +281,12 @@ class _CoursePageState extends State<CoursePage> {
           children: [
             const Text("Courses",
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900, color: Colors.white)),
+            Spacer(),
+            IconButton(
+            icon: const Icon(Icons.search, size: 35),
+            color:Colors.white,
+            onPressed: () {},
+            ),
           ],
         ),
       ),
@@ -399,18 +405,23 @@ class _CoursePageState extends State<CoursePage> {
         children: [
         Row(
           children:[
-            Text("$cnt.",
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
-            ),
-            Spacer(),
-            IconButton(
+          Text("$cnt.",
+            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
+          ),
+          Spacer(),
+          IconButton(
+          icon: const Icon(Icons.drive_file_move, size: 35),
+          color:Colors.blue[900],
+          onPressed: () {},
+          ),
+          IconButton(
             icon: const Icon(Icons.edit, size: 30),
             color:Colors.blue[900],
             onPressed: () {
             _showEditPopup(context, index); // Show popup for editing
             },
           ),
-          const SizedBox(width: 2),
+          //const SizedBox(width: 2),
           IconButton(
             icon: const Icon(Icons.delete, size: 30),
             color: Colors.blue[900],

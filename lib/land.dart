@@ -24,6 +24,7 @@ class _LandPageState extends State<LandPage> {
               child: IconButton(
                 iconSize:50,
                 icon: Icon(Icons.map),
+                color: Colors.blue[900],
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.push(

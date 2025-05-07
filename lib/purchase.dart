@@ -86,6 +86,11 @@ class _PurchasePageState extends State<PurchasePage> {
                   ),
                 ),
             Spacer(),
+            IconButton(
+            icon: const Icon(Icons.search, size: 35),
+            color:Colors.white,
+            onPressed: () {},
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(
