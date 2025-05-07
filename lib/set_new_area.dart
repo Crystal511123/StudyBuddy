@@ -167,7 +167,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'image/forest.png',
+                        'image/barn.png',
                         scale: 3.0,
                         width: 80, // Adjust the width of the image
                         height: 80, // Adjust the height of the image

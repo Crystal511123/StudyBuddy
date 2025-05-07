@@ -333,7 +333,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Provider.of<SharedState>(context).isUnlocked
                 ?ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.asset('image/forest.png', scale: 3.0),
+                  child: Image.asset('image/barn.png', scale: 3.0),
                 )
                 :Column(
                   //mainAxisSize: MainAxisSize.min,
