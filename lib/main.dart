@@ -326,7 +326,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: GestureDetector(
               onTap: () {
                 if (Provider.of<SharedState>(context, listen:false).isUnlocked ==true){
-                  _showPopup(context,'Barn');
+                  _showPopup(context,Provider.of<SharedState>(context, listen: false).recordName);
                 }
               },
               child: Container(

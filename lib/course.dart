@@ -38,7 +38,7 @@ class _CoursePageState extends State<CoursePage> {
           ),
           content: SizedBox(
             width: 400,
-            height: 400,
+            height: 430,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -266,7 +266,73 @@ class _CoursePageState extends State<CoursePage> {
       },
     );
   }
-
+  void _showMove(BuildContext context, int taskIndex){
+    final sharedState = Provider.of<SharedState>(context, listen: false);
+    String targetArea = sharedState.tasks[taskIndex]['area'];
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Move",style:TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161))),
+          content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:[
+                Text.rich(
+                  textAlign:TextAlign.start, TextSpan(
+                  text: "Move ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+                  children:[
+                    TextSpan(
+                      text:"${sharedState.tasks[taskIndex]['title']} ",
+                      style: TextStyle(fontSize:20, color: Color.fromARGB(255, 23, 106, 201), fontWeight: FontWeight.w500),
+                    ),
+                    TextSpan(
+                      text: "to",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+                    ),
+                  ],
+                ),), //rich
+                StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return DropdownButton<String>(
+                      value: targetArea,
+                      dropdownColor: const Color.fromARGB(255, 254, 254, 254),
+                      underline: Container(),
+                      items: [
+                        DropdownMenuItem(value: 'Forest', child: Text("Forest",style:TextStyle(fontSize:20),)),
+                        if (sharedState.recordName!='') DropdownMenuItem(value: sharedState.recordName, child: Text("${sharedState.recordName}",style:TextStyle(fontSize:20),)),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          targetArea = value!;
+                        });
+                      },
+                    );
+                  },
+              ),
+              ],),
+          //),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the popup
+              },
+              child: const Text("Cancel",style: TextStyle(fontSize: 20)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                sharedState.moveCourse(taskIndex,targetArea);
+                Navigator.of(context).pop(); // Close the popup
+              },
+              child: const Text("Move",style: TextStyle(fontSize: 20)),
+            ),
+          ],
+        );
+      },
+     );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -412,7 +478,9 @@ class _CoursePageState extends State<CoursePage> {
           IconButton(
           icon: const Icon(Icons.drive_file_move, size: 35),
           color:Colors.blue[900],
-          onPressed: () {},
+          onPressed: () {
+            _showMove(context, index);
+          },
           ),
           IconButton(
             icon: const Icon(Icons.edit, size: 30),

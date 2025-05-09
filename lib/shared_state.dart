@@ -77,10 +77,17 @@ class SharedState extends ChangeNotifier {
   String recordName='';
   void setRecordName(String name) {
     recordName = name; // Update the course name
+    print('recordName: $recordName');
     notifyListeners(); // Notify listeners about the change
   }
   String landName(String name) {
     if(name=='Forest') {return 'Forest';}
     else {return recordName;}// Update the course name // Notify listeners about the change
+  }
+  void moveCourse(int index, String area){
+    tasks[index]['area'] = area; // Update the course name
+    print(tasks[index]['title']);
+    print(tasks[index]['area']);
+    notifyListeners(); // Notify listeners about the change
   }
 }
