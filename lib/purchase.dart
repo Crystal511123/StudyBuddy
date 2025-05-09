@@ -74,7 +74,10 @@ class _PurchasePageState extends State<PurchasePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         toolbarHeight: 65.0,
@@ -113,129 +116,151 @@ class _PurchasePageState extends State<PurchasePage> {
             ),
           ]
         ),
+        bottom: const TabBar(
+          indicatorColor: Colors.white,
+          labelStyle: TextStyle(fontSize: 25.0, fontWeight:FontWeight.bold, color:Colors.white),  //For Selected tab
+          unselectedLabelStyle: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold,color:Colors.white),
+          tabs: <Widget>[
+            Tab(text: 'Items',),
+            Tab(text: 'Characters'),
+          ],)
       ),
       body: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  // Items
-                  Text("Items", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color:Color.fromARGB(255, 23, 118, 202)),),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/bush.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Bush",120,bushCount,
-                        () => increment(() => bushCount, (v) => bushCount = v, 120),
-                        () => decrement(() => bushCount, (v) => bushCount = v),
-                      ),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/appletree.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Apple tree", 250, appleTreeCount,
-                        () => increment(() => appleTreeCount, (v) => appleTreeCount = v, 250),
-                        () => decrement(() => appleTreeCount, (v) => appleTreeCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/rosebush.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Rose Bush", 300, roseBushCount,
-                        () => increment(() => roseBushCount, (v) => roseBushCount = v, 300),
-                        () => decrement(() => roseBushCount, (v) => roseBushCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/cactus.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Cactus", 300, cactusCount,
-                        () => increment(() => cactusCount, (v) => cactusCount = v, 300),
-                        () => decrement(() => cactusCount, (v) => cactusCount = v)),
-                      ),
-                    ],
-                  ), 
-                  SizedBox(height: 20),
-
-                  // Characters
-                  Text("Characters", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color:Color.fromARGB(255, 23, 118, 202))),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/elf.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Elf", 1000, elfCount,
-                        () => increment(() => elfCount, (v) => elfCount = v, 1000),
-                        () => decrement(() => elfCount, (v) => elfCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/cowboy.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Cowboy", 1200, cowboyCount,
-                        () => increment(() => cowboyCount, (v) => cowboyCount = v, 1200),
-                        () => decrement(() => cowboyCount, (v) => cowboyCount = v)),
-                      ),
-                    ],
-                  ), 
-                  //SizedBox(he
-                ],
-              ),
-            ),
+            child: TabBarView(
+              children: <Widget>[
+                Expanded(
+                  child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        // Items
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/bush.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Bush",120,bushCount,
+                              () => increment(() => bushCount, (v) => bushCount = v, 120),
+                              () => decrement(() => bushCount, (v) => bushCount = v),
+                            ),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/appletree.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Apple tree", 250, appleTreeCount,
+                              () => increment(() => appleTreeCount, (v) => appleTreeCount = v, 250),
+                              () => decrement(() => appleTreeCount, (v) => appleTreeCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/rosebush.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Rose Bush", 300, roseBushCount,
+                              () => increment(() => roseBushCount, (v) => roseBushCount = v, 300),
+                              () => decrement(() => roseBushCount, (v) => roseBushCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/cactus.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cactus", 300, cactusCount,
+                              () => increment(() => cactusCount, (v) => cactusCount = v, 300),
+                              () => decrement(() => cactusCount, (v) => cactusCount = v)),
+                            ),
+                          ],
+                        ), 
+                        SizedBox(height: 20), 
+                        //SizedBox(he
+                      ],
+                    ),
+                  ),
+                ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/elf.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Elf", 1000, elfCount,
+                              () => increment(() => elfCount, (v) => elfCount = v, 1000),
+                              () => decrement(() => elfCount, (v) => elfCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/cowboy.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cowboy", 1200, cowboyCount,
+                              () => increment(() => cowboyCount, (v) => cowboyCount = v, 1200),
+                              () => decrement(() => cowboyCount, (v) => cowboyCount = v)),
+                            ),
+                          ],
+                        ), 
+                        //SizedBox(he
+                      ],
+                    ),
+                  ),
+                ),
           ),
+              ],
+            ),
           ),
           Container(
             color:Colors.blue[50],
@@ -271,14 +296,11 @@ class _PurchasePageState extends State<PurchasePage> {
                 ),
               ],
             )
-              
-             
-            
-            
-          ),
+          ),//Cal exp
         ],
         )
       
+    ),
     );
   }
 }

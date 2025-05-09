@@ -79,7 +79,10 @@ class _NewAreaPageState extends State<NewAreaPage> {
   Widget build(BuildContext context) {
     
     final double wordSize=18.0;
-    return Scaffold(
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 3,
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[600],
         toolbarHeight: 65.0,
@@ -118,252 +121,267 @@ class _NewAreaPageState extends State<NewAreaPage> {
             ),
           ]
         ),
+        bottom: const TabBar(
+          indicatorColor: Colors.white,
+          labelStyle: TextStyle(fontSize: 22.0, fontWeight:FontWeight.bold, color:Colors.white),  //For Selected tab
+          unselectedLabelStyle: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold,color:Colors.white),
+          tabs: <Widget>[
+            Tab(text:'Background'),
+            Tab(text: 'Items',),
+            Tab(text: 'Characters'),
+          ],)
       ),
       body: Column(
         children: [
+          
           Expanded(
-            child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                Row(
-                  children: [
-                    Text("Name:", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color:Color.fromARGB(255, 23, 118, 202)),),
-                      Expanded(
-                        child: TextField(
-                          style:TextStyle(fontSize:20),
-                          controller: landName,
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                            border: UnderlineInputBorder(),
-                            hintText: 'New Land Name',
-                            hintStyle: TextStyle(fontSize: 20, color: Colors.grey),
+            child:TabBarView(
+              children: <Widget>[
+                Expanded(
+                  child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/forest.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Text('Forest',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
+                            Spacer(),
+                            Transform.scale(
+                              scale:2,
+                              child: 
+                                Checkbox(
+                                  value: selectedBackground == 'Forest',
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      selectedBackground = value == true ? 'Forest' : null;
+                                    });
+                                  },
+                                ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/barn.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Text('Barn',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
+                            Spacer(),
+                            Transform.scale(
+                              scale:2,
+                              child: 
+                                Checkbox(
+                                  value: selectedBackground == 'Barn',
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      selectedBackground = value == true ? 'Barn' : null;
+                                    });
+                                  },
+                                ),
+                            )
+                            
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/cyberpunk.jpg',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            RichText( text: TextSpan( children: [
+                              TextSpan(
+                                text: "Cyberpunk\n",
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
+                              ),
+                              WidgetSpan(
+                                child: Icon(Icons.lock, size: 18,color:Colors.grey,),
+                              ),
+                              TextSpan(
+                                text: "EXP > 6000",
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
+                              ),
+                            ], ), ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/wildwest.jpg',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            RichText( text: TextSpan( children: [
+                              TextSpan(
+                                text: "Wild West\n",
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
+                              ),
+                              WidgetSpan(
+                                child: Icon(Icons.lock, size: 18,color:Colors.grey,),
+                              ),
+                              TextSpan(
+                                text: "Study >10 hours",
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
+                              ),
+                            ], ), ),
+                          ],
+                        ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
                 ),
-                const SizedBox(height: 20),
-                Text("Background", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color:Color.fromARGB(255, 23, 118, 202)),),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/forest.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Text('Forest',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
-                      Spacer(),
-                      Transform.scale(
-                        scale:2,
-                        child: 
-                          Checkbox(
-                            value: selectedBackground == 'Forest',
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedBackground = value == true ? 'Forest' : null;
-                              });
-                            },
-                          ),
-                      )
-                    ],
+                Expanded(
+                  child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        // Items
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/bush.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Bush",120,bushCount,
+                              () => increment(() => bushCount, (v) => bushCount = v, 120),
+                              () => decrement(() => bushCount, (v) => bushCount = v),
+                            ),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/appletree.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Apple tree", 250, appleTreeCount,
+                              () => increment(() => appleTreeCount, (v) => appleTreeCount = v, 250),
+                              () => decrement(() => appleTreeCount, (v) => appleTreeCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/rosebush.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Rose Bush", 300, roseBushCount,
+                              () => increment(() => roseBushCount, (v) => roseBushCount = v, 300),
+                              () => decrement(() => roseBushCount, (v) => roseBushCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/cactus.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cactus", 300, cactusCount,
+                              () => increment(() => cactusCount, (v) => cactusCount = v, 300),
+                              () => decrement(() => cactusCount, (v) => cactusCount = v)),
+                            ),
+                          ],
+                        ), 
+                        SizedBox(height: 20), 
+                        //SizedBox(he
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/barn.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Text('Barn',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
-                      Spacer(),
-                      Transform.scale(
-                        scale:2,
-                        child: 
-                          Checkbox(
-                            value: selectedBackground == 'Barn',
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedBackground = value == true ? 'Barn' : null;
-                              });
-                            },
-                          ),
-                      )
-                      
-                    ],
+                ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/elf.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Elf", 1000, elfCount,
+                              () => increment(() => elfCount, (v) => elfCount = v, 1000),
+                              () => decrement(() => elfCount, (v) => elfCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/cowboy.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cowboy", 1200, cowboyCount,
+                              () => increment(() => cowboyCount, (v) => cowboyCount = v, 1200),
+                              () => decrement(() => cowboyCount, (v) => cowboyCount = v)),
+                            ),
+                          ],
+                        ), 
+                        //SizedBox(he
+                      ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/cyberpunk.jpg',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      RichText( text: TextSpan( children: [
-                        TextSpan(
-                          text: "Cyberpunk\n",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
-                        ),
-                        WidgetSpan(
-                          child: Icon(Icons.lock, size: 18,color:Colors.grey,),
-                        ),
-                        TextSpan(
-                          text: "EXP > 6000",
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
-                        ),
-                      ], ), ),
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/wildwest.jpg',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      RichText( text: TextSpan( children: [
-                        TextSpan(
-                          text: "Wild West\n",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize, color: Colors.grey),
-                        ),
-                        WidgetSpan(
-                          child: Icon(Icons.lock, size: 18,color:Colors.grey,),
-                        ),
-                        TextSpan(
-                          text: "Study >10 hours",
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: wordSize, color: Colors.grey),
-                        ),
-                      ], ), ),
-                    ],
-                  ),
-                  // Items
-                  Text("Items", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color:Color.fromARGB(255, 23, 118, 202)),),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/bush.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Bush",120,bushCount,
-                        () => increment(() => bushCount, (v) => bushCount = v, 120),
-                        () => decrement(() => bushCount, (v) => bushCount = v),
-                      ),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/appletree.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Apple tree", 250, appleTreeCount,
-                        () => increment(() => appleTreeCount, (v) => appleTreeCount = v, 250),
-                        () => decrement(() => appleTreeCount, (v) => appleTreeCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/rosebush.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Rose Bush", 300, roseBushCount,
-                        () => increment(() => roseBushCount, (v) => roseBushCount = v, 300),
-                        () => decrement(() => roseBushCount, (v) => roseBushCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/cactus.png',
-                        scale: 3.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Cactus", 300, cactusCount,
-                        () => increment(() => cactusCount, (v) => cactusCount = v, 300),
-                        () => decrement(() => cactusCount, (v) => cactusCount = v)),
-                      ),
-                    ],
-                  ), 
-                  SizedBox(height: 20),
-
-                  // Characters
-                  Text("Characters", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color:Color.fromARGB(255, 23, 118, 202))),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/elf.png',
-                        scale: 1.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Elf", 1000, elfCount,
-                        () => increment(() => elfCount, (v) => elfCount = v, 1000),
-                        () => decrement(() => elfCount, (v) => elfCount = v)),
-                      ),
-                    ],
-                  ), 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'image/cowboy.png',
-                        scale: 1.0,
-                        width: 80, // Adjust the width of the image
-                        height: 80, // Adjust the height of the image
-                      ),
-                      const SizedBox(width: 10), // Add spacing between the image and the text
-                      Expanded(
-                      child: itemRow("Cowboy", 1200, cowboyCount,
-                        () => increment(() => cowboyCount, (v) => cowboyCount = v, 1200),
-                        () => decrement(() => cowboyCount, (v) => cowboyCount = v)),
-                      ),
-                    ],
-                  ), 
-                  //SizedBox(he
-                ],
-              ),
-            ),
+                ),
           ),
+              ],
+            ),
           ),
           Container(
             color:Colors.blue[50],
@@ -377,26 +395,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom( backgroundColor: const Color.fromARGB(255, 13, 71, 161),),
                   onPressed: totalExp <= maxExp ? () {
-                    if(landName.text.isEmpty) {
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Missing Name',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
-                            content: Text('Please enter a name for this land.',style: TextStyle(fontSize: 18),),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      return;
-                    }else if (selectedBackground==null){
+                    if(selectedBackground==null) {
                       showDialog(
                         context: context, 
                         builder: (BuildContext context) {
@@ -409,14 +408,45 @@ class _NewAreaPageState extends State<NewAreaPage> {
                                   Navigator.of(context).pop(); // Close the dialog
                                 },
                                 child: Text('OK'),
-                              ),
+                              )
                             ],
                           );
                         },
                       );
                       return;
-                    }
-                    Provider.of<SharedState>(context, listen: false).unlockArea();
+                    }else if (landName.text.isEmpty){
+                      showDialog(
+                        context: context, 
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Enter Land Name',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
+                            content: //Text('Please select a background for this land.',style: TextStyle(fontSize: 18),),
+                            SizedBox(
+                              width:400,
+                              child: Row(
+                      children: [
+                        
+                          Expanded(
+                            child: TextField(
+                              style:TextStyle(fontSize:20),
+                              controller: landName,
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                                border: UnderlineInputBorder(),
+                                hintText: 'New Land Name',
+                                hintStyle: TextStyle(fontSize: 20, color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ],
+                    ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); 
+                                  Provider.of<SharedState>(context, listen: false).unlockArea();
                     Provider.of<SharedState>(context, listen:false).deductExp(totalExp); // Update the total exp in SharedState
                     Provider.of<SharedState>(context, listen: false).setRecordName(landName.text); // Update the record name in SharedState
                     Navigator.of(context).pop();
@@ -426,20 +456,27 @@ class _NewAreaPageState extends State<NewAreaPage> {
                           builder: (context) => const LandPage(area:'Barn'),
                         ),
                       );
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }
+                    
                     // Navigate back to the main page
                   } : null,
                   child: Text("Buy & Visit new land", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
               ],
             )
-              
-             
-            
-            
           ),
         ],
         )
       
+    ),
     );
   }
 }
