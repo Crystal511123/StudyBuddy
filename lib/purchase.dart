@@ -31,6 +31,52 @@ class _PurchasePageState extends State<PurchasePage> {
     super.initState();
     maxExp = Provider.of<SharedState>(context, listen: false).exp;
   }
+  double _scale = 1.0;
+  int _lastExp = -1;
+  void _triggerAnimation() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _scale = 2.0;
+      });
+      Future.delayed(const Duration(milliseconds: 50), () {
+        setState(() {
+          _scale = 1.0;
+        });
+      });
+    });
+  }
+  Widget _animation(BuildContext context) {
+    return Selector<SharedState, int>(
+      selector: (_, state) => state.exp,
+      builder: (context, exp, child) {
+        if (_lastExp != -1 && exp != _lastExp) {
+          // EXP changed, trigger animation
+          _triggerAnimation();
+        }
+        _lastExp = exp;
+        return AnimatedScale(
+          scale: _scale, // 每次 EXP 改變都重建動畫
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              'EXP ${Provider.of<SharedState>(context).exp}',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   void increment(Function getter, Function setter, int cost) {
     if (totalExp + cost <= maxExp) {
@@ -99,21 +145,7 @@ class _PurchasePageState extends State<PurchasePage> {
             color:Colors.white,
             onPressed: () {},
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width:2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                'EXP ${Provider.of<SharedState>(context).exp}',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            _animation(context),
           ]
         ),
         bottom: const TabBar(

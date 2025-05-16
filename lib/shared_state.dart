@@ -7,7 +7,7 @@ class SharedState extends ChangeNotifier {
       'area': 'Forest',
       'title': 'Business English',
       'reward': 'Exp 200',
-      'task': 'Finish Module 1',
+      'task': 'Complete Module 1',
       'progress': '30:34 / 30:34',
       'progressValue': 1.0,
       'link':'coursera.org/learn/Business-English',
@@ -53,7 +53,7 @@ class SharedState extends ChangeNotifier {
     tasks[index]['task'] = newTasks; // Update the course name
     tasks[index]['progress'] = newProgress; // Update the course name
     tasks[index]['progressValue'] = newProgressValue; // Update the course name
-    exp+=200;
+    deductExp(-200);
     notifyListeners(); // Notify listeners about the change
   }
   void addTask(Map<String, dynamic> task) {

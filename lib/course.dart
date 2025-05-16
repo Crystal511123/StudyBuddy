@@ -251,7 +251,7 @@ class _CoursePageState extends State<CoursePage> {
                     'minutes': minuteController,
                     'period': selectedPeriod,
                     'reward': 'Exp 350',
-                    'task': 'Finish Module 1',
+                    'task': 'Complete Module 1',
                     'progress': '00:00 / 45:21',
                     'progressValue': 0.0,
                   });
@@ -333,6 +333,10 @@ class _CoursePageState extends State<CoursePage> {
       },
      );
   }
+ 
+  double textSize=17.0;
+  double subtitleSize=20.0;
+  double titleSize=25.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -358,7 +362,7 @@ class _CoursePageState extends State<CoursePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -420,15 +424,22 @@ class _CoursePageState extends State<CoursePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Progress:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        const Text("2/5 modules",style:TextStyle(fontSize: 20,)),
+        Text.rich(TextSpan(
+          text: "Progress: ",
+          style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500,),
+          children:[
+            TextSpan(text: "2/5 modules", style: TextStyle(fontSize: textSize,fontWeight: FontWeight.w400,),),
+          ],
+        ),),
+        //Text("Progress:",style: TextStyle(fontSize: subtitleSize,fontWeight: FontWeight.w500,)),
+        //Text("2/5 modules",style:TextStyle(fontSize: textSize,)),
         Padding(
           padding: const EdgeInsets.only(right: 20, top: 4),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: 2 / 5,
-              minHeight: 12,
+              minHeight: 20,
               backgroundColor: const Color.fromARGB(99, 125, 160, 177),
               color: Colors.blue[800],
             ),
@@ -441,15 +452,22 @@ class _CoursePageState extends State<CoursePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:[
-        Text("Progress:",style:TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        Text("0/6 modules",style:TextStyle(fontSize: 20)),
+        Text.rich(TextSpan(
+          text: "Progress: ",
+          style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500,),
+          children:[
+            TextSpan(text: "0/6 modules", style: TextStyle(fontSize: textSize,fontWeight: FontWeight.w400,),),
+          ],
+        ),),
+        //Text("Progress:",style:TextStyle(fontSize: subtitleSize,fontWeight: FontWeight.w500,)),
+        //Text("0/6 modules",style:TextStyle(fontSize: textSize)),
         Padding(
           padding: const EdgeInsets.only(right: 20, top: 4),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: 0 / 6,
-              minHeight: 12,
+              minHeight: 20,
               backgroundColor:  const Color.fromARGB(99, 125, 160, 177),
               color: Colors.black,
             ),
@@ -460,157 +478,130 @@ class _CoursePageState extends State<CoursePage> {
   }
   Widget _courseItem() {
     final sharedState = Provider.of<SharedState>(context);
-    int cnt=0;
+    int cnt = 0;
     return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: List.generate(sharedState.tasks.length, (index){
-      if (sharedState.tasks[index]['area'] == widget.area) {
-        cnt++;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-        Row(
-          children:[
-          Text("$cnt.",
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
-          ),
-          Spacer(),
-          IconButton(
-          icon: const Icon(Icons.drive_file_move, size: 35),
-          color:Colors.blue[900],
-          onPressed: () {
-            _showMove(context, index);
-          },
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit, size: 30),
-            color:Colors.blue[900],
-            onPressed: () {
-            _showEditPopup(context, index); // Show popup for editing
-            },
-          ),
-          //const SizedBox(width: 2),
-          IconButton(
-            icon: const Icon(Icons.delete, size: 30),
-            color: Colors.blue[900],
-            onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Warning",style:TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161))),
-                content: const Text("This course will be deleted permanently. Are you sure?", style: TextStyle(fontSize: 20)),
-                actions: [
-                ElevatedButton(
-                  onPressed: () {
-                  Navigator.of(context).pop(); // Close the popup
-                  },
-                  child: const Text("No",style: TextStyle(fontSize: 20)),
-                ),
-                TextButton(
-                  onPressed: () {
-                  setState(() {
-                    sharedState.tasks.removeAt(index); // Remove the course item
-                  });
-                  Navigator.of(context).pop(); // Close the popup
-                  },
-                  child: const Text("Yes",style: TextStyle(fontSize: 20)),
-                ),
-                ],
-              );
-              },
-            );
-            },
-          ),
-          ]
-        ),
-        
-        Row(
-          children: [
-          const Text("Course Name: ", style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-          ],
-        ),
-        Text(
-          sharedState.tasks[index]['title'],
-          style: const TextStyle(
-          fontSize: 20,
-          decoration: TextDecoration.underline,
-          ),
-        ),
-        const SizedBox(height: 4),
-        const Text("Course Link:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        SingleChildScrollView(
-          //for horizontal scrolling
-          scrollDirection: Axis.horizontal,
-          child: Text(
-            sharedState.tasks[index]['link'],
-            style: const TextStyle(
-            decoration: TextDecoration.underline,
-            fontSize: 20,
-            color: Color.fromARGB(255, 42, 99, 145),
-          ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        const Text("User Name:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        SingleChildScrollView(
-          //for horizontal scrolling
-          scrollDirection: Axis.horizontal,
-          child: Text(
-            sharedState.tasks[index]['userName'],
-            style: const TextStyle(
-            decoration: TextDecoration.underline,
-            fontSize: 20,
-          ),
-          ),
-        ),
-        const SizedBox(height: 4),
-        const Text("Password:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        Text(
-          sharedState.tasks[index]['access'],
-          style: const TextStyle(
-          decoration: TextDecoration.underline,
-          fontSize: 20,
-          ),
-        ),
-        const SizedBox(height: 8),
-        const Text("Learning Goal:",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w700,)),
-        Row(
-          children: [
-          Text(sharedState.tasks[index]['hours'].toString(),
-            style: const TextStyle(decoration: TextDecoration.underline,fontSize: 20,),),
-          const SizedBox(width: 8),
-          const Text("hr(s)",style:TextStyle(fontSize: 20,fontWeight: FontWeight.w400,)),
-          const SizedBox(width: 15),
-          Text(sharedState.tasks[index]['minutes'].toString(),
-            style: const TextStyle(decoration: TextDecoration.underline,fontSize: 20,),),
-          const SizedBox(width: 8),
-          const Text("min(s)", style:TextStyle(fontSize: 20,fontWeight: FontWeight.w400,)),
-          ],
-        ),
-        Row(
-          children:[
-            const Text("per", style:TextStyle(fontSize: 20,fontWeight: FontWeight.w400,)),
-            const SizedBox(width: 10),
-            SizedBox(
-                width: 60,
-                child: Text(
-                sharedState.tasks[index]['period'],
-                style: const TextStyle(decoration: TextDecoration.underline,fontSize: 20,),
-                ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(sharedState.tasks.length, (index) {
+        if (sharedState.tasks[index]['area'] == widget.area) {
+          cnt++;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 8,), // Add spacing between items
+            padding: const EdgeInsets.only(bottom:13, left:5, right:5, top:5), // Add padding inside the block
+            decoration: BoxDecoration(
+              //border: Border.all(color: Colors.black), // Add a border
+              borderRadius: BorderRadius.circular(8), // Rounded corners
+              color: const Color.fromARGB(40, 54, 165, 255), // Background color
             ),
-          ],
-        ),
-        
-        const SizedBox(height: 8),
-        index == 0 ? haveProgress() : noProgress(),
-        const SizedBox(height: 25),
-        ],
-      );
-      } else {
-      return const SizedBox.shrink(); // Return an empty widget for non-matching tasks
-      }
-    })
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "$cnt.",
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: Color.fromARGB(255, 13, 71, 161),
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.drive_file_move, size: 35),
+                      color: Colors.blue[900],
+                      onPressed: () {
+                        _showMove(context, index);
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit, size: 30),
+                      color: Colors.blue[900],
+                      onPressed: () {
+                        _showEditPopup(context, index); // Show popup for editing
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete, size: 30),
+                      color: Colors.blue[900],
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                "Warning",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 13, 71, 161),
+                                ),
+                              ),
+                              content: const Text(
+                                "This course will be deleted permanently. Are you sure?",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("No", style: TextStyle(fontSize: 20)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      sharedState.tasks.removeAt(index); // Remove the course item
+                                    });
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("Yes", style: TextStyle(fontSize: 20)),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                Text(
+                  sharedState.tasks[index]['title'],
+                  style: TextStyle(
+                    fontSize: titleSize,
+                    fontWeight: FontWeight.w700,
+                    color: const Color.fromARGB(255, 13, 71, 161),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    Text(
+                      "Learning Goal: ",
+                      style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      sharedState.tasks[index]['hours'].toString(),
+                      style: TextStyle(fontSize: textSize),
+                    ),
+                    const Text(":", style: TextStyle(fontSize: 20)),
+                    Text(
+                      sharedState.tasks[index]['minutes'].toString(),
+                      style: TextStyle(fontSize: textSize),
+                    ),
+                    Text(
+                      " per ${sharedState.tasks[index]['period']}",
+                      style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+                index == 0 ? haveProgress() : noProgress(),
+              ],
+            ),
+          );
+        } else {
+          return const SizedBox.shrink(); // Return an empty widget for non-matching tasks
+        }
+      }),
     );
   }
 }
