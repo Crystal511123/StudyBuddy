@@ -10,6 +10,108 @@ class CoursePage extends StatefulWidget {
 }
 
 class _CoursePageState extends State<CoursePage> {
+  String _selectedItem='Coursera';
+  List<String> dropdownItems = ['Coursera'];
+  Future<void> _showAddItemDialog() async {
+    final sharedState = Provider.of<SharedState>(context, listen: false);
+    final TextEditingController userNameController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController platformNameController = TextEditingController();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text('Add New Platform', style: TextStyle(fontSize:20, color: Color.fromARGB(255, 13, 71, 161))),
+        content: SizedBox(
+          width: 400,
+          height: 250,
+          child: Column(
+            children:[
+              Align(alignment: Alignment.centerLeft, child: Text("Platform Name:",style:TextStyle(fontSize: 18,))),
+              TextField(
+              style:TextStyle(fontSize:18),
+                      controller: platformNameController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 4),
+                        border: UnderlineInputBorder(),
+                      ),
+              ),
+              const SizedBox(height: 8),
+              Align(alignment: Alignment.centerLeft, child: Text("User Name:",style:TextStyle(fontSize: 18,))),
+              TextField(
+              style:TextStyle(fontSize:20),
+                      controller: userNameController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 4),
+                        border: UnderlineInputBorder(),
+                      ),
+              ),
+              const SizedBox(height: 8),
+              Align(alignment: Alignment.centerLeft, child: Text("Password:",style:TextStyle(fontSize: 18,))),
+              TextField(
+              style:TextStyle(fontSize:20),
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 4),
+                        border: UnderlineInputBorder(),
+                      ),
+              ),
+            ],
+        ),),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // close dialog
+            },
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (passwordController.text.isEmpty || userNameController.text.isEmpty || platformNameController.text.isEmpty) {
+                String missingFields = '';
+                if (platformNameController.text.isEmpty) missingFields += '-Platform Name\n';
+                if (passwordController.text.isEmpty) missingFields += '-Password\n';
+                if (userNameController.text.isEmpty) missingFields += '-User Name\n';
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                    title: const Text("Missing Fields",style: TextStyle(color: Color.fromARGB(255, 13, 71, 161)),),
+                    content: Text("Please fill in the following fields:\n$missingFields",),
+                    actions: [
+                      TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the popup
+                      },
+                      child: const Text("OK"),
+                      ),
+                    ],
+                    );
+                  },
+                  );
+                  return;
+              }
+              sharedState.addPlatform({
+                'pName': platformNameController.text,
+                'uName': userNameController.text,
+                'password': passwordController.text,
+              });
+              setState((){
+                dropdownItems.add(platformNameController.text);
+                _selectedItem = platformNameController.text;
+                print(_selectedItem);
+              });
+              Navigator.of(context).pop(); // close dialog
+            },
+            child: Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
   void _showEditPopup(BuildContext context, [int? taskIndex]) {
     final sharedState = Provider.of<SharedState>(context, listen: false);
     final TextEditingController nameController = TextEditingController(
@@ -18,16 +120,10 @@ class _CoursePageState extends State<CoursePage> {
     final TextEditingController linkController = TextEditingController(
       text: taskIndex != null ? sharedState.tasks[taskIndex]['link'] ?? '' : '',
     );
-    final TextEditingController userNameController = TextEditingController(
-      text: taskIndex != null ? sharedState.tasks[taskIndex]['userName'] ?? '' : '',
-    );
-    final TextEditingController accessController = TextEditingController(
-      text: taskIndex != null ? sharedState.tasks[taskIndex]['access'] ?? '' : '',
-    );
     int hourController = taskIndex != null ? sharedState.tasks[taskIndex]['hours'] ?? 0 : 0;
     int minuteController = taskIndex != null ? sharedState.tasks[taskIndex]['minutes'] ?? 0 : 0;
     String selectedPeriod = taskIndex != null ? sharedState.tasks[taskIndex]['period'] ?? 'Day' : 'Day';
-
+    String selectPlatform = taskIndex != null ? sharedState.tasks[taskIndex]['platformName'] ?? 'Coursera' : 'Coursera';
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -55,7 +151,48 @@ class _CoursePageState extends State<CoursePage> {
                   ),
                 ),
                 const SizedBox(height: 8),
-
+                const Align(alignment: Alignment.centerLeft, child: Text("Course Platform:",style:TextStyle(fontSize: 18,))),
+                
+              Align(
+                alignment: Alignment.centerLeft,
+                child: 
+                    StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                        return DropdownButton<String>(
+                          value: selectPlatform,
+                          dropdownColor: const Color.fromARGB(255, 254, 254, 254),
+                          underline: Container(),
+                          items:  [       
+                            ...dropdownItems.map((item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(item),
+                          )),
+                          DropdownMenuItem(
+                            value: 'add_new',
+                            child: Row(
+                              children: [
+                                Icon(Icons.add, color: Colors.blue),
+                                SizedBox(width: 8),
+                                Text('Add')
+                              ],
+                            ),
+                          ),
+                          ],
+                          onChanged: (value) async{
+                  if (value == 'add_new') {
+                    await _showAddItemDialog();
+                    setState((){selectPlatform = _selectedItem;});
+                } else {
+                  setState(() {
+                    selectPlatform = value!;
+                  });
+                }},
+                        );
+                      },
+                    ),),
+                  
+                
+              const SizedBox(height: 8),
                 // Course Link
                 const Align(alignment: Alignment.centerLeft, child: Text("Course Link:",style:TextStyle(fontSize: 18,))),
                 TextField(
@@ -67,33 +204,7 @@ class _CoursePageState extends State<CoursePage> {
                     border: UnderlineInputBorder(),
                   ),
                 ),
-
-                //User Name
-                const SizedBox(height: 8),
-                const Align(alignment: Alignment.centerLeft, child: Text("User Name:",style:TextStyle(fontSize: 18,))),
-                TextField(
-                  style:TextStyle(fontSize:20),
-                  controller: userNameController,
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 4),
-                    border: UnderlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // Access
-                const Align(alignment: Alignment.centerLeft, child: Text("Password:",style:TextStyle(fontSize: 18,))),
-                TextField(
-                  style:TextStyle(fontSize:20),
-                  controller: accessController,
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 4),
-                    border: UnderlineInputBorder(),
-                  ),
-                ),
                 const SizedBox(height: 12),
-
                 // Learning Goal
                 const Align(alignment: Alignment.centerLeft, child: Text("Learning Goal:",style:TextStyle(fontSize: 18,))),
                 const SizedBox(height: 4),
@@ -200,15 +311,13 @@ class _CoursePageState extends State<CoursePage> {
                 // Update the course information in SharedState
                 if (nameController.text.isEmpty ||
                   linkController.text.isEmpty ||
-                  userNameController.text.isEmpty ||
-                  accessController.text.isEmpty ||
+                  selectPlatform=='' ||
                   (hourController==0 && minuteController==0 )
                   ) {
                   String missingFields = '';
                   if (nameController.text.isEmpty) missingFields += '-Course Name\n';
                   if (linkController.text.isEmpty) missingFields += '-Course Link\n';
-                  if (userNameController.text.isEmpty) missingFields += '-User Name\n';
-                  if (accessController.text.isEmpty) missingFields += '-Password\n';
+                  if (selectPlatform=='') missingFields += '-Course Platform\n';
                   if (minuteController==0 && hourController==0) missingFields += '-Learning Goal\n';
 
                   showDialog(
@@ -234,8 +343,7 @@ class _CoursePageState extends State<CoursePage> {
                   sharedState.updateCourseInfo(taskIndex,
                     nameController.text,
                     linkController.text,
-                    userNameController.text,
-                    accessController.text,
+                    selectPlatform,
                     hourController,
                     minuteController,
                     selectedPeriod,
@@ -244,9 +352,8 @@ class _CoursePageState extends State<CoursePage> {
                   sharedState.addTask({
                     'area': widget.area,
                     'title': nameController.text,
+                    'platformName': selectPlatform,
                     'link': linkController.text,
-                    'access': accessController.text,
-                    'userName': userNameController.text,
                     'hours': hourController,
                     'minutes': minuteController,
                     'period': selectedPeriod,
@@ -353,9 +460,14 @@ class _CoursePageState extends State<CoursePage> {
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.w900, color: Colors.white)),
             Spacer(),
             IconButton(
-            icon: const Icon(Icons.search, size: 35),
-            color:Colors.white,
-            onPressed: () {},
+              icon: const Icon(Icons.search, size: 35),
+              color:Colors.white,
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.vpn_key, size: 35),
+              color:Colors.white,
+              onPressed: () {},
             ),
           ],
         ),
@@ -575,9 +687,15 @@ class _CoursePageState extends State<CoursePage> {
                 const SizedBox(height: 3),
                 Row(
                   children: [
+                    if(sharedState.tasks[index]['period']=='Day') Text('Daily ', style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500),),
+                    if(sharedState.tasks[index]['period']=='Week') Text('Weekly ', style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500),),
                     Text(
-                      "Learning Goal: ",
+                      "Goal: ",
                       style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      "0:00:00 / ",
+                      style: TextStyle(fontSize: textSize),
                     ),
                     Text(
                       sharedState.tasks[index]['hours'].toString(),
@@ -585,15 +703,24 @@ class _CoursePageState extends State<CoursePage> {
                     ),
                     const Text(":", style: TextStyle(fontSize: 20)),
                     Text(
-                      sharedState.tasks[index]['minutes'].toString(),
+                      "${sharedState.tasks[index]['minutes'].toString()}:00",
                       style: TextStyle(fontSize: textSize),
                     ),
-                    Text(
-                      " per ${sharedState.tasks[index]['period']}",
-                      style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w400),
-                    ),
+
                   ],
                 ),
+                Padding(
+          padding: const EdgeInsets.only(right: 20, top: 4),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: 0 / 6,
+              minHeight: 20,
+              backgroundColor:  const Color.fromARGB(99, 125, 160, 177),
+              color: Colors.black,
+            ),
+          ),
+        ),
                 index == 0 ? haveProgress() : noProgress(),
               ],
             ),

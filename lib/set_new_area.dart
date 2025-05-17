@@ -16,6 +16,8 @@ class _NewAreaPageState extends State<NewAreaPage> {
   int cactusCount = 0;
   int elfCount = 0;
   int cowboyCount = 0;
+  int androidCount = 0;
+  int farmBoyCount = 0;
   final TextEditingController landName=TextEditingController(text:'');
   String? selectedBackground; // Tracks the selected background
 
@@ -25,7 +27,9 @@ class _NewAreaPageState extends State<NewAreaPage> {
       roseBushCount * 300 +
       cactusCount * 300 +
       elfCount * 1000 +
-      cowboyCount * 1200;
+      cowboyCount * 1200 +
+      androidCount * 1250 +
+      farmBoyCount * 1300;
 
   late int maxExp;
 
@@ -151,6 +155,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                               scale: 3.0,
                               width: 80, // Adjust the width of the image
                               height: 80, // Adjust the height of the image
+                              fit: BoxFit.cover, 
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             Text('Forest',style: TextStyle(fontWeight: FontWeight.bold, fontSize: wordSize),),
@@ -169,12 +174,13 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             )
                           ],
                         ),
+                        SizedBox(height:10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               'image/barn.png',
-                              scale: 3.0,
+                              fit: BoxFit.cover, 
                               width: 80, // Adjust the width of the image
                               height: 80, // Adjust the height of the image
                             ),
@@ -196,14 +202,15 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             
                           ],
                         ),
+                        SizedBox(height:10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               'image/cyberpunk.jpg',
-                              scale: 3.0,
                               width: 80, // Adjust the width of the image
                               height: 80, // Adjust the height of the image
+                              fit: BoxFit.cover, 
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             RichText( text: TextSpan( children: [
@@ -221,14 +228,15 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             ], ), ),
                           ],
                         ),
+                        SizedBox(height:10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'image/wildwest.jpg',
-                              scale: 3.0,
+                              'image/wild_west.png',
                               width: 80, // Adjust the width of the image
                               height: 80, // Adjust the height of the image
+                              fit: BoxFit.cover, 
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             RichText( text: TextSpan( children: [
@@ -346,8 +354,8 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             Image.asset(
                               'image/elf.png',
                               scale: 3.0,
-                              width: 80, // Adjust the width of the image
-                              height: 80, // Adjust the height of the image
+                              width: 85, // Adjust the width of the image
+                              height: 85, // Adjust the height of the image
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             Expanded(
@@ -363,8 +371,8 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             Image.asset(
                               'image/cowboy.png',
                               scale: 3.0,
-                              width: 80, // Adjust the width of the image
-                              height: 80, // Adjust the height of the image
+                              width: 85, // Adjust the width of the image
+                              height: 85, // Adjust the height of the image
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             Expanded(
@@ -374,7 +382,40 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             ),
                           ],
                         ), 
-                        //SizedBox(he
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/android.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cowboy", 1250, androidCount,
+                              () => increment(() => androidCount, (v) => androidCount = v, 1200),
+                              () => decrement(() => androidCount, (v) => androidCount = v)),
+                            ),
+                          ],
+                        ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/farm_boy.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Cowboy", 1300, farmBoyCount,
+                              () => increment(() => farmBoyCount, (v) => farmBoyCount = v, 1200),
+                              () => decrement(() => farmBoyCount, (v) => farmBoyCount = v)),
+                            ),
+                          ],
+                        ), 
                       ],
                     ),
                   ),

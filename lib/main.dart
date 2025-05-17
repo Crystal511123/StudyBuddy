@@ -108,8 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (_) {
         return AlertDialog(
           insetPadding: EdgeInsets.all(10),
-          backgroundColor: Colors.blue[50],
-          title: const Text('Warning!',style:TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 23, 106, 201))),
+          backgroundColor: const Color.fromARGB(255, 255, 188, 188),
+          title: const Text('Warning!',style:TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 188, 27, 27))),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     TextSpan(
                     text: 'Business English',
-                    style: TextStyle(color: Color.fromARGB(255, 23, 106, 201), fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Color.fromARGB(255, 188, 27, 27), fontWeight: FontWeight.w500),
                     ),
                     TextSpan(
                     text: ' for 4 weeks!',
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     TextSpan(
                     text: 'Penalty: EXP 2000 ',
-                    style: TextStyle(color: Color.fromARGB(255, 23, 106, 201), fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Color.fromARGB(255, 188, 27, 27), fontWeight: FontWeight.w500),
                     ),
                     TextSpan(
                     text: 'to keep playing.',
@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 //side: const BorderSide(color: Color.fromARGB(255, 13, 71, 161), width: 2),
-                backgroundColor: const Color.fromARGB(255, 13, 71, 161),
+                backgroundColor: Color.fromARGB(255, 188, 27, 27),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: () {
