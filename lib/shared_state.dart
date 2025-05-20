@@ -97,4 +97,30 @@ class SharedState extends ChangeNotifier {
     platforms.add(platform);
     notifyListeners();
   }
+  void updatePlatformInfo(int index, String newPlatformName, String newUserName, String newPassword) {
+    String target = platforms[index]['pName'];
+    List<int> taskIndices = tasks.asMap().entries
+      .where((entry) => entry.value['platformName'] == target)
+      .map((entry) => entry.key)
+      .toList();
+    for(int i=0;i<taskIndices.length;i++){
+      tasks[taskIndices[i]]['platformName'] = newPlatformName;
+    }
+    platforms[index]['pName'] = newPlatformName;
+    platforms[index]['uName'] = newUserName;
+    platforms[index]['password'] = newPassword;
+    notifyListeners();
+  }
+  void removeP(String target,int index){
+    platforms.removeAt(index);
+    List<int> taskIndices = tasks.asMap().entries
+      .where((entry) => entry.value['platformName'] == target)
+      .map((entry) => entry.key)
+      .toList();
+    print(taskIndices);
+    for(int i=taskIndices.length-1;i>=0;i--){
+      removeTask(taskIndices[i]);
+    }
+    notifyListeners();
+  }
 }

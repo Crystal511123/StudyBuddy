@@ -219,7 +219,7 @@ class _TaskPageState extends State<TaskPage>{
                           value: Provider.of<SharedState>(context).tasks[index]['progressValue'],
                           color: Colors.black,
                           backgroundColor: Colors.black12,
-                          minHeight: 12,
+                          minHeight: 20,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -228,7 +228,7 @@ class _TaskPageState extends State<TaskPage>{
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Provider.of<SharedState>(context).tasks[index]['progressValue'] == 1.0
                                 ? Colors.blue[800]
-                                : Colors.blueGrey,
+                                : Color.fromARGB(255, 171, 184, 191),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),

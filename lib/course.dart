@@ -10,18 +10,26 @@ class CoursePage extends StatefulWidget {
 }
 
 class _CoursePageState extends State<CoursePage> {
-  String _selectedItem='Coursera';
-  List<String> dropdownItems = ['Coursera'];
-  Future<void> _showAddItemDialog() async {
+  Future<String?> _showAddItemDialog([int? taskIndex]) async {
     final sharedState = Provider.of<SharedState>(context, listen: false);
-    final TextEditingController userNameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController platformNameController = TextEditingController();
-    showDialog(
+    final TextEditingController platformNameController = TextEditingController(
+      text: taskIndex != null ? sharedState.platforms[taskIndex]['pName'] ?? '' : '',
+    );
+    final TextEditingController userNameController = TextEditingController(
+      text: taskIndex != null ? sharedState.platforms[taskIndex]['uName'] ?? '' : '',
+    );
+    final TextEditingController passwordController = TextEditingController(
+      text: taskIndex != null ? sharedState.platforms[taskIndex]['password'] ?? '' : '',
+    );
+    return await showDialog<String>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text('Add New Platform', style: TextStyle(fontSize:20, color: Color.fromARGB(255, 13, 71, 161))),
+      builder: (BuildContext context) {
+      return StatefulBuilder(  
+      builder: (context, setState)=> AlertDialog(
+        title: Text(taskIndex == null ? "Add Platform" : "Edit Platform",
+            style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
+          ),
         content: SizedBox(
           width: 400,
           height: 250,
@@ -31,6 +39,7 @@ class _CoursePageState extends State<CoursePage> {
               TextField(
               style:TextStyle(fontSize:18),
                       controller: platformNameController,
+                      onChanged: (_) => setState(() {}),
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 4),
@@ -40,8 +49,9 @@ class _CoursePageState extends State<CoursePage> {
               const SizedBox(height: 8),
               Align(alignment: Alignment.centerLeft, child: Text("User Name:",style:TextStyle(fontSize: 18,))),
               TextField(
-              style:TextStyle(fontSize:20),
+              style:TextStyle(fontSize:18),
                       controller: userNameController,
+                      onChanged: (_) => setState(() {}),
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 4),
@@ -51,8 +61,9 @@ class _CoursePageState extends State<CoursePage> {
               const SizedBox(height: 8),
               Align(alignment: Alignment.centerLeft, child: Text("Password:",style:TextStyle(fontSize: 18,))),
               TextField(
-              style:TextStyle(fontSize:20),
+              style:TextStyle(fontSize:18),
                       controller: passwordController,
+                      onChanged: (_) => setState(() {}),
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 4),
@@ -66,21 +77,35 @@ class _CoursePageState extends State<CoursePage> {
             onPressed: () {
               Navigator.of(context).pop(); // close dialog
             },
-            child: Text('Cancel'),
+            child: Text(taskIndex == null ?"Discard" :"Cancel", style:TextStyle(fontSize: 20,)),
           ),
           ElevatedButton(
-            onPressed: () {
-              if (passwordController.text.isEmpty || userNameController.text.isEmpty || platformNameController.text.isEmpty) {
-                String missingFields = '';
-                if (platformNameController.text.isEmpty) missingFields += '-Platform Name\n';
-                if (passwordController.text.isEmpty) missingFields += '-Password\n';
-                if (userNameController.text.isEmpty) missingFields += '-User Name\n';
-                showDialog(
+            onPressed: passwordController.text.isNotEmpty && userNameController.text.isNotEmpty && platformNameController.text.isNotEmpty ?() async {
+              int existingIndex = sharedState.platforms.indexWhere((platform) => platform['pName'] == platformNameController.text);
+              
+              if(taskIndex!=null){ sharedState.updatePlatformInfo(taskIndex, platformNameController.text, userNameController.text, passwordController.text);}
+              else if(existingIndex!=-1){ 
+                await showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                    title: const Text("Missing Fields",style: TextStyle(color: Color.fromARGB(255, 13, 71, 161)),),
-                    content: Text("Please fill in the following fields:\n$missingFields",),
+                    title: const Text("Platform Exist",style: TextStyle(color: Color.fromARGB(255, 13, 71, 161)),),
+                    content:Text.rich(
+                              TextSpan(
+                              text: 'Updated ',
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+                              children: [
+                                TextSpan(
+                                text: '${platformNameController.text}',
+                                style: TextStyle(color: Colors.blue[500], fontWeight: FontWeight.w500),
+                                ),
+                                TextSpan(
+                                text: '\'s information',
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.black),
+                                ),
+                              ],
+                              ),
+                            ),
                     actions: [
                       TextButton(
                       onPressed: () {
@@ -92,27 +117,28 @@ class _CoursePageState extends State<CoursePage> {
                     );
                   },
                   );
-                  return;
-              }
-              sharedState.addPlatform({
-                'pName': platformNameController.text,
-                'uName': userNameController.text,
-                'password': passwordController.text,
-              });
-              setState((){
-                dropdownItems.add(platformNameController.text);
-                _selectedItem = platformNameController.text;
-                print(_selectedItem);
-              });
-              Navigator.of(context).pop(); // close dialog
-            },
-            child: Text('Add'),
+                sharedState.updatePlatformInfo(existingIndex, platformNameController.text, userNameController.text, passwordController.text);}
+              else{sharedState.addPlatform({'pName':platformNameController.text, 'uName':userNameController.text, 'password':passwordController.text});}
+              Navigator.of(context).pop(platformNameController.text); // close dialog
+            }:null,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                (Set<WidgetState> states) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return const Color.fromARGB(255, 171, 184, 191);
+                  }
+                  return Color.fromARGB(255, 13, 71, 161);
+                },
+              ),
+            ),
+            child: Text('Save', style:TextStyle(color:Colors.white,fontSize:20)),
           ),
         ],
       ),
+      );},
     );
   }
-  void _showEditPopup(BuildContext context, [int? taskIndex]) {
+  Future<void> _showEditPopup(BuildContext context, [int? taskIndex]) async {
     final sharedState = Provider.of<SharedState>(context, listen: false);
     final TextEditingController nameController = TextEditingController(
       text: taskIndex != null ? sharedState.tasks[taskIndex]['title'] ?? '' : '',
@@ -123,11 +149,16 @@ class _CoursePageState extends State<CoursePage> {
     int hourController = taskIndex != null ? sharedState.tasks[taskIndex]['hours'] ?? 0 : 0;
     int minuteController = taskIndex != null ? sharedState.tasks[taskIndex]['minutes'] ?? 0 : 0;
     String selectedPeriod = taskIndex != null ? sharedState.tasks[taskIndex]['period'] ?? 'Day' : 'Day';
-    String selectPlatform = taskIndex != null ? sharedState.tasks[taskIndex]['platformName'] ?? 'Coursera' : 'Coursera';
-    showDialog(
+    //String plat = '';
+    //if (taskIndex == null && sharedState.platforms.isNotEmpty) plat = sharedState.platforms[0]['pName'];
+    String selectPlatform = taskIndex != null ? sharedState.tasks[taskIndex]['platformName'] ?? 'add_new' : 'add_new';
+    //String ? selectPlatform;
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
         return AlertDialog(
           title: Text(taskIndex == null ? "Add Course" : "Edit Course",
             style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
@@ -144,6 +175,7 @@ class _CoursePageState extends State<CoursePage> {
                 TextField(
                   style:TextStyle(fontSize:20),
                   controller: nameController,
+                  onChanged: (_) => setState(() {}),
                   decoration: const InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 4),
@@ -157,17 +189,14 @@ class _CoursePageState extends State<CoursePage> {
                 alignment: Alignment.centerLeft,
                 child: 
                     StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
+                      builder: (BuildContext context, StateSetter setDropdownState) {
                         return DropdownButton<String>(
                           value: selectPlatform,
                           dropdownColor: const Color.fromARGB(255, 254, 254, 254),
+                          hint: Text('Select platform'),
                           underline: Container(),
-                          items:  [       
-                            ...dropdownItems.map((item) => DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          )),
-                          DropdownMenuItem(
+                          items:  [ 
+                            DropdownMenuItem(
                             value: 'add_new',
                             child: Row(
                               children: [
@@ -177,16 +206,27 @@ class _CoursePageState extends State<CoursePage> {
                               ],
                             ),
                           ),
+                          if(sharedState.platforms.isNotEmpty)
+                            ...sharedState.platforms.map((item) => DropdownMenuItem(
+                            value: item['pName'],
+                            child: Text(item['pName']),
+                            )),
                           ],
                           onChanged: (value) async{
-                  if (value == 'add_new') {
-                    await _showAddItemDialog();
-                    setState((){selectPlatform = _selectedItem;});
-                } else {
-                  setState(() {
-                    selectPlatform = value!;
-                  });
-                }},
+                          if (value == 'add_new') {
+                            final newPlatform = await _showAddItemDialog();
+                            if (newPlatform != null && newPlatform.isNotEmpty) {
+                              setDropdownState(() {
+                                selectPlatform = newPlatform; // Set to the newly added platform
+                              });
+                              setState(() {});
+                            }
+                        } else {
+                          setDropdownState(() {
+                            selectPlatform = value!;
+                          });
+                          setState(() {});
+                        }},
                         );
                       },
                     ),),
@@ -198,6 +238,7 @@ class _CoursePageState extends State<CoursePage> {
                 TextField(
                   style:TextStyle(fontSize:20),
                   controller: linkController,
+                  onChanged: (_) => setState(() {}),
                   decoration: const InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 4),
@@ -212,9 +253,10 @@ class _CoursePageState extends State<CoursePage> {
                   children: [
                     Row(
                       children: [
-                        StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState) {
-                            return DropdownButton<int>(
+                        //StatefulBuilder(
+                          //builder: (BuildContext context, StateSetter setState) {
+                            //return 
+                            DropdownButton<int>(
                               value: hourController,
                               dropdownColor: const Color.fromARGB(255, 254, 254, 254),
                               underline: Container(),
@@ -232,18 +274,19 @@ class _CoursePageState extends State<CoursePage> {
                                   hourController = value!;
                                 });
                               },
-                            );
-                          },
-                        ),
+                            ),//;
+                          //},
+                        //),
                       ],
                     ),
                     const Text("hr(s)",style:TextStyle(fontSize: 18,)),
                     const SizedBox(width: 20),
                     Row(
                       children: [
-                        StatefulBuilder(
-                          builder: (BuildContext context, StateSetter setState) {
-                            return DropdownButton<int>(
+                        //StatefulBuilder(
+                          //builder: (BuildContext context, StateSetter setState) {
+                            //return 
+                            DropdownButton<int>(
                               value: minuteController,
                               dropdownColor: const Color.fromARGB(255, 254, 254, 254),
                               //style: const TextStyle(color: Colors.blue),
@@ -262,9 +305,9 @@ class _CoursePageState extends State<CoursePage> {
                                   minuteController = value!;
                                 });
                               },
-                            );
-                          },
-                        ),
+                            ),//;
+                          //},
+                        //),
                       ],
                       ),
                       const Text("min(s)",style:TextStyle(fontSize: 18,)),
@@ -307,9 +350,9 @@ class _CoursePageState extends State<CoursePage> {
               child: Text(taskIndex == null ?"Discard" :"Cancel", style:TextStyle(fontSize: 20,)),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: nameController.text.isNotEmpty&&linkController.text.isNotEmpty&&(hourController!=0 || minuteController!=0)&&(selectPlatform!='add_new') ? () {
                 // Update the course information in SharedState
-                if (nameController.text.isEmpty ||
+                /*if (nameController.text.isEmpty ||
                   linkController.text.isEmpty ||
                   selectPlatform=='' ||
                   (hourController==0 && minuteController==0 )
@@ -338,7 +381,7 @@ class _CoursePageState extends State<CoursePage> {
                   },
                   );
                   return; // Do not proceed if any field is empty
-                }
+                }*/
                 if (taskIndex != null) {
                   sharedState.updateCourseInfo(taskIndex,
                     nameController.text,
@@ -365,11 +408,22 @@ class _CoursePageState extends State<CoursePage> {
 
                 }
                 Navigator.of(context).pop(); // Close the popup
-              },
-              child: const Text("Save", style:TextStyle(fontSize: 20,)),
+              }:null,
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return const Color.fromARGB(255, 171, 184, 191);
+                    }
+                    return Color.fromARGB(255, 13, 71, 161);
+                  },
+                ),
+              ),
+              child: const Text("Save", style:TextStyle(fontSize: 20,color:Colors.white)),
             ),
           ],
         );
+      },);
       },
     );
   }
@@ -440,10 +494,205 @@ class _CoursePageState extends State<CoursePage> {
       },
      );
   }
- 
+  Future<void> _showPlatformMng(BuildContext context)async{
+    final sharedState = Provider.of<SharedState>(context, listen: false);
+    await showDialog(
+      context: context,
+      //barrierDismissible: false,
+      builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+return AlertDialog(
+  title: Text('Platform Management',
+    style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
+  ),
+  content: SizedBox(
+    width: 400,
+    height: 430,
+    child: Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue[900],
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () async {
+              await _showAddItemDialog();
+              setState(() {}); // Refresh the list after adding
+            },
+            child: const Text(
+              "Add Platform",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+              child: ListView.builder(
+              itemCount: sharedState.platforms.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 4.0, top:2),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    //border: Border.all(color: const Color.fromARGB(173, 33, 149, 243), width:2),
+                    borderRadius: BorderRadius.circular(8),
+                    color: const Color.fromARGB(40, 54, 165, 255),
+                  ),
+                  child: Row(
+                    children:[
+                      Text(
+                        Provider.of<SharedState>(context).platforms[index]['pName'],
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromARGB(255, 13, 71, 161),
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.edit, size: 30),
+                        color: Colors.blue[900],
+                        onPressed: () {
+                          _showAddItemDialog(index);
+                        },
+                      ),
+                      IconButton(
+                      icon: const Icon(Icons.delete, size: 30),
+                      color: Colors.blue[900],
+                      onPressed: () {
+                        String plat = sharedState.platforms[index]['pName'];
+                        List<int> taskIndices = sharedState.tasks
+                          .asMap()
+                          .entries
+                          .where((entry) => entry.value['platformName'] == plat)
+                          .map((entry) => entry.key)
+                          .toList();
+                        String related='';
+                        for (int i=0;i<taskIndices.length;i++){
+                          related += '-${(sharedState.tasks[taskIndices[i]]['title'])}\n';
+                        }
+                        if(taskIndices.isNotEmpty){
+                          showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                "Warning",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 13, 71, 161),
+                                ),
+                              ),
+                              content: Text.rich(
+                                TextSpan(
+                                  text:'Permanently delete\n',
+                                  style: TextStyle(color:Colors.black, fontSize: 17,),
+                                  children:[
+                                    TextSpan(
+                                      text:'$plat\n$related',
+                                      style: TextStyle(color:Colors.blue[700], fontSize: 17,),
+                                    ),
+                                    TextSpan(
+                                      text:'Are you sure?',
+                                      style: TextStyle(fontSize: 17,color:Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("No", style: TextStyle(fontSize: 20)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      sharedState.removeP(plat,index); // Remove the course item
+                                    });
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("Yes", style: TextStyle(fontSize: 20)),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        }else
+                        {showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                "Warning",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 13, 71, 161),
+                                ),
+                              ),
+                              content: const Text(
+                                "This platform will be deleted permanently. Are you sure?",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("No", style: TextStyle(fontSize: 20)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      sharedState.platforms.removeAt(index); // Remove the course item
+                                    });
+                                    Navigator.of(context).pop(); // Close the popup
+                                  },
+                                  child: const Text("Yes", style: TextStyle(fontSize: 20)),
+                                ),
+                              ],
+                            );
+                          },
+                        );}
+                      },
+                    ),
+                    ], 
+                  ),
+                );
+              },
+              )   
+        ),
+      ],
+    ),
+  ),
+  actions: [
+    TextButton(
+      onPressed: () {
+        Navigator.of(context).pop(); // Close the popup
+      },
+      child: Text('OK', style:TextStyle(fontSize: 20,)),
+    ),
+  ],
+);      },);
+      },
+    );
+  }
   double textSize=17.0;
   double subtitleSize=20.0;
-  double titleSize=25.0;
+  double titleSize=23.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -467,7 +716,9 @@ class _CoursePageState extends State<CoursePage> {
             IconButton(
               icon: const Icon(Icons.vpn_key, size: 35),
               color:Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                _showPlatformMng(context);
+              },
             ),
           ],
         ),
@@ -487,11 +738,13 @@ class _CoursePageState extends State<CoursePage> {
                   ),
                   const SizedBox(width: 20),
                   
-                  Text(
-                    Provider.of<SharedState>(context, listen: false).landName(widget.area),
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+                   Expanded(
+                    child: Text(
+                      Provider.of<SharedState>(context, listen: false).landName(widget.area),
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -546,7 +799,7 @@ class _CoursePageState extends State<CoursePage> {
         //Text("Progress:",style: TextStyle(fontSize: subtitleSize,fontWeight: FontWeight.w500,)),
         //Text("2/5 modules",style:TextStyle(fontSize: textSize,)),
         Padding(
-          padding: const EdgeInsets.only(right: 20, top: 4),
+          padding: const EdgeInsets.only(right: 20, top: 2),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
@@ -574,7 +827,7 @@ class _CoursePageState extends State<CoursePage> {
         //Text("Progress:",style:TextStyle(fontSize: subtitleSize,fontWeight: FontWeight.w500,)),
         //Text("0/6 modules",style:TextStyle(fontSize: textSize)),
         Padding(
-          padding: const EdgeInsets.only(right: 20, top: 4),
+          padding: const EdgeInsets.only(right: 20, top: 2),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
@@ -612,28 +865,28 @@ class _CoursePageState extends State<CoursePage> {
                     Text(
                       "$cnt.",
                       style: const TextStyle(
-                        fontSize: 25,
+                        fontSize: 23,
                         fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 13, 71, 161),
                       ),
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: const Icon(Icons.drive_file_move, size: 35),
+                      icon: const Icon(Icons.drive_file_move, size: 33),
                       color: Colors.blue[900],
                       onPressed: () {
                         _showMove(context, index);
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.edit, size: 30),
+                      icon: const Icon(Icons.edit, size: 28),
                       color: Colors.blue[900],
                       onPressed: () {
                         _showEditPopup(context, index); // Show popup for editing
                       },
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete, size: 30),
+                      icon: const Icon(Icons.delete, size: 28),
                       color: Colors.blue[900],
                       onPressed: () {
                         showDialog(
@@ -710,7 +963,7 @@ class _CoursePageState extends State<CoursePage> {
                   ],
                 ),
                 Padding(
-          padding: const EdgeInsets.only(right: 20, top: 4),
+          padding: const EdgeInsets.only(right: 20, top: 2),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(

@@ -55,13 +55,14 @@ class _NewAreaPageState extends State<NewAreaPage> {
     }
   }
 
+
   Widget itemRow(String label, int cost, int count, VoidCallback onIncrement, VoidCallback onDecrement) {
     return Row(
       children: [
         Text.rich(TextSpan(
           text: '$label:\n', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           children:[ 
-            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color:Colors.blue[500]),),
           ],
         )),
         Spacer(),
@@ -147,6 +148,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
+                        Align(alignment: Alignment.centerLeft, child: Text('*Required',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15,color: Colors.red),),),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -434,81 +436,88 @@ class _NewAreaPageState extends State<NewAreaPage> {
                 Text("Total EXP: $totalExp", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color:Color.fromARGB(255, 23, 118, 202)),),
                 Text("Remain EXP: ${maxExp - totalExp}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color:Color.fromARGB(255, 23, 118, 202)),),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom( backgroundColor: const Color.fromARGB(255, 13, 71, 161),),
-                  onPressed: totalExp <= maxExp ? () {
-                    if(selectedBackground==null) {
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Missing Background',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
-                            content: Text('Please select a background for this land.',style: TextStyle(fontSize: 18),),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                },
-                                child: Text('OK'),
-                              )
-                            ],
-                          );
-                        },
-                      );
-                      return;
-                    }else if (landName.text.isEmpty){
-                      showDialog(
-                        context: context, 
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Enter Land Name',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
-                            content: //Text('Please select a background for this land.',style: TextStyle(fontSize: 18),),
-                            SizedBox(
-                              width:400,
-                              child: Row(
-                      children: [
-                        
-                          Expanded(
-                            child: TextField(
-                              style:TextStyle(fontSize:20),
-                              controller: landName,
-                              decoration: const InputDecoration(
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                                border: UnderlineInputBorder(),
-                                hintText: 'New Land Name',
-                                hintStyle: TextStyle(fontSize: 20, color: Colors.grey),
+                  //style: ElevatedButton.styleFrom( backgroundColor: const Color.fromARGB(255, 13, 71, 161),),
+                  onPressed: (totalExp <= maxExp)&&(selectedBackground!=null) ? () {
+                    showDialog(
+                      context: context, 
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(
+                        builder: (context, setState) {
+                        return AlertDialog(
+                          title: Text('Enter Land Name',style: TextStyle(color: Color.fromARGB(255, 13, 71, 161))),
+                          content: //Text('Please select a background for this land.',style: TextStyle(fontSize: 18),),
+                          SizedBox(
+                            width:400,
+                            child: Row(
+                              children: [
+                              Expanded(
+                                child: TextField(
+                                  style:TextStyle(fontSize:20),
+                                  controller: landName,
+                                  onChanged: (_) => setState(() {}),
+                                  decoration: const InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                                    border: UnderlineInputBorder(),
+                                    hintText: 'New Land Name',
+                                    hintStyle: TextStyle(fontSize: 20, color: Colors.grey),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                    ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'),
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); 
-                                  Provider.of<SharedState>(context, listen: false).unlockArea();
-                    Provider.of<SharedState>(context, listen:false).deductExp(totalExp); // Update the total exp in SharedState
-                    Provider.of<SharedState>(context, listen: false).setRecordName(landName.text); // Update the record name in SharedState
-                    Navigator.of(context).pop();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LandPage(area:'Barn'),
-                        ),
-                      );
-                                },
-                                child: Text('OK'),
+                            ElevatedButton(
+                              onPressed: (landName.text.isNotEmpty) ? () {
+                                Navigator.of(context).pop(); 
+                                Provider.of<SharedState>(context, listen: false).unlockArea();
+                                Provider.of<SharedState>(context, listen:false).deductExp(totalExp); // Update the total exp in SharedState
+                                Provider.of<SharedState>(context, listen: false).setRecordName(landName.text); // Update the record name in SharedState
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LandPage(area:'Barn'),
+                                  ),
+                                );
+                              }:null,
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                                  (Set<WidgetState> states) {
+                                    if (states.contains(WidgetState.disabled)) {
+                                      return const Color.fromARGB(255, 171, 184, 191);
+                                    }
+                                    return Color.fromARGB(255, 13, 71, 161);
+                                  },
+                                ),
                               ),
-                            ],
-                          );
-                        },
+                              child: Text('OK', style:TextStyle(color:Colors.white),),
+                            ),
+                          ],
+                        );
+                        },);},
                       );
                       return;
-                    }
                     
-                    // Navigate back to the main page
                   } : null,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.disabled)) {
+                          return const Color.fromARGB(255, 171, 184, 191);
+                        }
+                        return Color.fromARGB(255, 13, 71, 161);
+                      },
+                    ),
+                  ),
                   child: Text("Buy & Visit new land", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),),
                 ),
               ],

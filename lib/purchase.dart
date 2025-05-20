@@ -100,7 +100,7 @@ class _PurchasePageState extends State<PurchasePage> {
         Text.rich(TextSpan(
           text: '$label:\n', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           children:[ 
-            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),),
+            TextSpan(text: 'EXP $cost', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color:Colors.blue[500]),),
           ],
         )),
         Spacer(),
