@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'shared_state.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -53,6 +54,13 @@ class _TaskPageState extends State<TaskPage>{
         );
       },
     );
+  }
+  Future<void> _launchUrl() async {
+    print('go go go!');
+    final Uri _url = Uri.parse('https://www.coursera.org/learn/robotics1/home/module/1');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
   double titleSize=25.0;
   double subtitleSize=20.0;
@@ -166,8 +174,12 @@ class _TaskPageState extends State<TaskPage>{
                         style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500, color: Colors.black),
                         children:[
                           TextSpan(
+                            text:"Complete",
+                            style:TextStyle(fontSize: textSize, fontWeight: FontWeight.w400, color: Colors.black),
+                          ),
+                          TextSpan(
                             text:" ${Provider.of<SharedState>(context).tasks[index]['task']}",
-                            style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w400, color: Colors.black),
+                            style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w500, color: Colors.black),
                           ),
                         ],
                       ), ),
@@ -223,8 +235,30 @@ class _TaskPageState extends State<TaskPage>{
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Center(
-                        child: ElevatedButton(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:[ 
+                          ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green[800],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                          ),
+                          onPressed:() {
+                            _launchUrl();
+                          },
+                          child: const Text(
+                            'Go',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),),
+                          const SizedBox(width: 20),
+                          ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Provider.of<SharedState>(context).tasks[index]['progressValue'] == 1.0
                                 ? Colors.blue[800]
@@ -250,7 +284,7 @@ class _TaskPageState extends State<TaskPage>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
+                        ),],
                       )
                     ],
                   ),

@@ -166,10 +166,10 @@ class _NewAreaPageState extends State<NewAreaPage> {
                               scale:2,
                               child: 
                                 Checkbox(
-                                  value: selectedBackground == 'Forest',
+                                  value: selectedBackground == 'forest',
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      selectedBackground = value == true ? 'Forest' : null;
+                                      selectedBackground = value == true ? 'forest' : null;
                                     });
                                   },
                                 ),
@@ -193,10 +193,10 @@ class _NewAreaPageState extends State<NewAreaPage> {
                               scale:2,
                               child: 
                                 Checkbox(
-                                  value: selectedBackground == 'Barn',
+                                  value: selectedBackground == 'barn',
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      selectedBackground = value == true ? 'Barn' : null;
+                                      selectedBackground = value == true ? 'barn' : null;
                                     });
                                   },
                                 ),
@@ -395,7 +395,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             Expanded(
-                            child: itemRow("Cowboy", 1250, androidCount,
+                            child: itemRow("Android", 1250, androidCount,
                               () => increment(() => androidCount, (v) => androidCount = v, 1200),
                               () => decrement(() => androidCount, (v) => androidCount = v)),
                             ),
@@ -412,7 +412,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                             ),
                             const SizedBox(width: 10), // Add spacing between the image and the text
                             Expanded(
-                            child: itemRow("Cowboy", 1300, farmBoyCount,
+                            child: itemRow("Farmer", 1300, farmBoyCount,
                               () => increment(() => farmBoyCount, (v) => farmBoyCount = v, 1200),
                               () => decrement(() => farmBoyCount, (v) => farmBoyCount = v)),
                             ),
@@ -481,6 +481,7 @@ class _NewAreaPageState extends State<NewAreaPage> {
                                 Provider.of<SharedState>(context, listen: false).unlockArea();
                                 Provider.of<SharedState>(context, listen:false).deductExp(totalExp); // Update the total exp in SharedState
                                 Provider.of<SharedState>(context, listen: false).setRecordName(landName.text); // Update the record name in SharedState
+                                Provider.of<SharedState>(context, listen: false).setSelectarea(selectedBackground!);
                                 Navigator.of(context).pop();
                                 Navigator.push(
                                   context,

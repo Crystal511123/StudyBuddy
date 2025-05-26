@@ -163,10 +163,7 @@ class _CoursePageState extends State<CoursePage> {
           title: Text(taskIndex == null ? "Add Course" : "Edit Course",
             style: const TextStyle(fontSize: 25,fontWeight: FontWeight.w700, color: Color.fromARGB(255, 13, 71, 161)),
           ),
-          content: SizedBox(
-            width: 400,
-            height: 430,
-          child: SingleChildScrollView(
+          content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -183,6 +180,9 @@ class _CoursePageState extends State<CoursePage> {
                   ),
                 ),
                 const SizedBox(height: 8),
+                Visibility(
+                visible:taskIndex==null,
+                child:Column(children:[
                 const Align(alignment: Alignment.centerLeft, child: Text("Course Platform:",style:TextStyle(fontSize: 18,))),
                 
               Align(
@@ -230,10 +230,9 @@ class _CoursePageState extends State<CoursePage> {
                         );
                       },
                     ),),
-                  
-                
               const SizedBox(height: 8),
                 // Course Link
+                
                 const Align(alignment: Alignment.centerLeft, child: Text("Course Link:",style:TextStyle(fontSize: 18,))),
                 TextField(
                   style:TextStyle(fontSize:20),
@@ -246,9 +245,10 @@ class _CoursePageState extends State<CoursePage> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                ],),),
                 // Learning Goal
                 const Align(alignment: Alignment.centerLeft, child: Text("Learning Goal:",style:TextStyle(fontSize: 18,))),
-                const SizedBox(height: 4),
+                //const SizedBox(height: 4),
                 Row(
                   children: [
                     Row(
@@ -341,7 +341,7 @@ class _CoursePageState extends State<CoursePage> {
               ],
             ),
           ),
-          ),
+          //),
           actions: [
             TextButton(
               onPressed: () {
@@ -401,8 +401,8 @@ class _CoursePageState extends State<CoursePage> {
                     'minutes': minuteController,
                     'period': selectedPeriod,
                     'reward': 'Exp 350',
-                    'task': 'Complete Module 1',
-                    'progress': '00:00 / 45:21',
+                    'task': '物體在空間運動中之描述(一)',
+                    'progress': '00:00 / 58:27',
                     'progressValue': 0.0,
                   });
 
@@ -734,7 +734,8 @@ return AlertDialog(
                 children: [
                   CircleAvatar(
                     radius: 40,
-                    child: ClipOval(child: Image.asset('image/forest.png', width:200, height:200, fit:BoxFit.cover,),)
+                    child: widget.area=='Forest'?ClipOval(child: Image.asset('image/forest.png', width:200, height:200, fit:BoxFit.cover,),)
+                    :ClipOval(child: Image.asset('image/${Provider.of<SharedState>(context, listen: false).selectarea}.png', width:200, height:200, fit:BoxFit.cover,),)
                   ),
                   const SizedBox(width: 20),
                   
@@ -821,7 +822,7 @@ return AlertDialog(
           text: "Progress: ",
           style: TextStyle(fontSize: subtitleSize, fontWeight: FontWeight.w500,),
           children:[
-            TextSpan(text: "0/6 modules", style: TextStyle(fontSize: textSize,fontWeight: FontWeight.w400,),),
+            TextSpan(text: "0/7 modules", style: TextStyle(fontSize: textSize,fontWeight: FontWeight.w400,),),
           ],
         ),),
         //Text("Progress:",style:TextStyle(fontSize: subtitleSize,fontWeight: FontWeight.w500,)),
@@ -831,7 +832,7 @@ return AlertDialog(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
-              value: 0 / 6,
+              value: 0 / 7,
               minHeight: 20,
               backgroundColor:  const Color.fromARGB(99, 125, 160, 177),
               color: Colors.black,

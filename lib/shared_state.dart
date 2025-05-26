@@ -7,7 +7,7 @@ class SharedState extends ChangeNotifier {
       'area': 'Forest',
       'title': 'Business English',
       'reward': 'Exp 200',
-      'task': 'Complete Module 1',
+      'task': 'Giving a presentation',
       'progress': '30:34 / 30:34',
       'progressValue': 1.0,
       'link':'coursera.org/learn/Business-English',
@@ -88,6 +88,11 @@ class SharedState extends ChangeNotifier {
   String landName(String name) {
     if(name=='Forest') {return 'Forest';}
     else {return recordName;}// Update the course name // Notify listeners about the change
+  }
+  String selectarea='';
+  void setSelectarea(String area){
+    selectarea = area;
+    notifyListeners();
   }
   void moveCourse(int index, String area){
     tasks[index]['area'] = area; // Update the course name

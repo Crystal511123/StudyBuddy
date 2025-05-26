@@ -15,6 +15,8 @@ class _PurchasePageState extends State<PurchasePage> {
   int cactusCount = 0;
   int elfCount = 0;
   int cowboyCount = 0;
+  int androidCount = 0;
+  int farmBoyCount = 0;
 
   int get totalExp =>
       bushCount * 120 +
@@ -22,7 +24,10 @@ class _PurchasePageState extends State<PurchasePage> {
       roseBushCount * 300 +
       cactusCount * 300 +
       elfCount * 1000 +
-      cowboyCount * 1200;
+      cowboyCount * 1200 +
+      androidCount * 1250 +
+      farmBoyCount * 1300;
+
 
   late int maxExp;
 
@@ -284,7 +289,41 @@ class _PurchasePageState extends State<PurchasePage> {
                               () => decrement(() => cowboyCount, (v) => cowboyCount = v)),
                             ),
                           ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/android.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Android", 1250, androidCount,
+                              () => increment(() => androidCount, (v) => androidCount = v, 1200),
+                              () => decrement(() => androidCount, (v) => androidCount = v)),
+                            ),
+                          ],
                         ), 
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'image/farm_boy.png',
+                              scale: 3.0,
+                              width: 80, // Adjust the width of the image
+                              height: 80, // Adjust the height of the image
+                            ),
+                            const SizedBox(width: 10), // Add spacing between the image and the text
+                            Expanded(
+                            child: itemRow("Farmer", 1300, farmBoyCount,
+                              () => increment(() => farmBoyCount, (v) => farmBoyCount = v, 1200),
+                              () => decrement(() => farmBoyCount, (v) => farmBoyCount = v)),
+                            ),
+                          ],
+                        ),  
                         //SizedBox(he
                       ],
                     ),
@@ -320,6 +359,8 @@ class _PurchasePageState extends State<PurchasePage> {
                       cactusCount = 0;
                       elfCount = 0;
                       cowboyCount = 0;
+                      androidCount = 0;
+                      farmBoyCount = 0;
                       maxExp = Provider.of<SharedState>(context, listen: false).exp ; // Reset total EXP
                     });
                   } : null,

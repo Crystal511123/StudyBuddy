@@ -18,8 +18,11 @@ class _LandPageState extends State<LandPage> {
         //child: 
         Container(
           decoration: BoxDecoration(
-          image: DecorationImage(
+          image: Provider.of<SharedState>(context, listen:false).selectarea=='barn'&&widget.area!='Forest' ? DecorationImage(
             image: AssetImage('image/barnarea.png'), // Path to your image
+            fit: BoxFit.cover, // Ensures the image fills the entire background
+          ):DecorationImage(
+            image: AssetImage('image/forestbg.png'), // Path to your image
             fit: BoxFit.cover, // Ensures the image fills the entire background
           ),
         ),
@@ -50,21 +53,6 @@ class _LandPageState extends State<LandPage> {
                 },
               ),
             )
-              /*
-              child: IconButton(
-                iconSize:50,
-                icon: Icon(Icons.map),
-                color: Colors.blue[900],
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyHomePage(),
-                    ),
-                  );
-                },
-              ),*/
             ),
 
             // Centered "Barn" text

@@ -367,9 +367,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Provider.of<SharedState>(context).isUnlocked
-                ?ClipRRect(
+                ? ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: Image.asset('image/barn.png', scale: 3.0),
+                  child: Image.asset('image/${Provider.of<SharedState>(context, listen: false).selectarea}.png', scale: 3.0),
                 )
                 :Column(
                   //mainAxisSize: MainAxisSize.min,
